@@ -13,7 +13,6 @@ app.get(["/posts/all", "/feed"], (req, res) => {
 
 
 app.get("/posts/:id", (req, res) => {
-
     console.log("REQ PARAMS",req.params.id)
     const post = someData.find( post => (post.id === parseInt(req.params.id)))
     console.log(post)
