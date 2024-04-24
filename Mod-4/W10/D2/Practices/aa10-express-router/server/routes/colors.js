@@ -2,6 +2,7 @@ const express = require("express")
 
 const colors = express.Router()
 
+"/colors"
 
 colors.get("", (req, res) => {
     res.json("GET /colors")
