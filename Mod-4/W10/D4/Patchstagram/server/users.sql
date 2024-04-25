@@ -1,4 +1,6 @@
 PRAGMA foreign_keys = 1;
+DROP TABLE IF EXISTS likes;
+DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS users;
 
@@ -18,9 +20,22 @@ CREATE TABLE posts (
     title VARCHAR(50) NOT NULL,
     image VARCHAR(250),
     post_date TEXT,
-    user_id INTEGER REFERENCES users(id)
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL
 );
 
+
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    comment_text VARCHAR(150) NOT NULL,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    post_id INTEGER REFERENCES posts(id) ON DELETE SET NULL  
+);
+
+
+CREATE TABLE likes (
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    post_id INTEGER REFERENCES posts(id) ON DELETE CASCADE
+);
 
 
 INSERT INTO users (name, username, profile, age, fav_toy)
@@ -55,21 +70,21 @@ VALUES
     "2024-02-02", 1);
 
 
--- INSERT INTO comments (comment_text, user_id, post_id)
--- VALUES
---     ("Enjoy your nap!", 2, 1),
---     ("Love the pic!", 3, 1),
---     ("That looks so cozy!", 1, 2),
---     ("Thats a big fish!", 1, 3),
---     ("Here fishy fishy!", 3, 3),
---     ("Why wasn't I invited? 😩", 2, 4),
---     ("Room for more?", 1, 4),
---     ("How dare he!!!", 1, 5),
---     ("No way!!!", 2, 6),
---     ("Its MIMI!!!", 1, 6);
+INSERT INTO comments (comment_text, user_id, post_id)
+VALUES
+    ("Enjoy your nap!", 2, 1),
+    ("Love the pic!", 3, 1),
+    ("That looks so cozy!", 1, 2),
+    ("Thats a big fish!", 1, 3),
+    ("Here fishy fishy!", 3, 3),
+    ("Why wasn't I invited? 😩", 2, 4),
+    ("Room for more?", 1, 4),
+    ("How dare he!!!", 1, 5),
+    ("No way!!!", 2, 6),
+    ("Its MIMI!!!", 1, 6);
 
 
--- INSERT INTO likes (user_id, post_id)
--- VALUES
---     (2,1),(3,1),(3,2),(1,3),(3,3),
---     (2,4),(1,5),(3,5),(4,5),(3,6);
+INSERT INTO likes (user_id, post_id)
+VALUES
+    (2,1),(3,1),(3,2),(1,3),(3,3),
+    (2,4),(1,5),(3,5),(4,5),(3,6);
