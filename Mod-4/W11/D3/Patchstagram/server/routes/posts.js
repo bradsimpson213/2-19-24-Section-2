@@ -1,11 +1,23 @@
 const express = require("express")
-const { Post } = require("../db/models")
+const { Post, User, Like } = require("../db/models")
 const router = express.Router()
 
 
 
 router.get("/all", async (req, res) => {
-    const allPosts = await Post.findAll();
+    const allPosts = await Post.findAll({
+        include: [
+        { model: User },
+        {
+            model: User,
+            as: "PostLikes",
+            attributes: ["username"],
+            // through: {
+            //     model: Like,
+            // }
+        }
+        ]
+    });
     // console.log(allPosts)
     res.json(allPosts)
 })
@@ -18,7 +30,15 @@ router.get("/:id", async (req, res) => {
     // })
     const onePost = await Post.findByPk(req.params.id)
     console.log(onePost)
-    res.json(onePost)
+    const userData = await onePost.getUser()
+    console.log(userData)
+
+    const payload = {
+        title: onePost.title,
+        image: onePost.image,
+        username: userData.username
+    }
+    res.json(payload)
 })
 
 
