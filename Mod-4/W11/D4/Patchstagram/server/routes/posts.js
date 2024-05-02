@@ -33,10 +33,16 @@ router.get("/:id", async (req, res) => {
     console.log(onePost)
     const userData = await onePost.getUser()
     console.log(userData)
+    const numLikes = Like.count({
+        where: {
+            postId: req.params.id
+        }
+    })
 
     const payload = {
         title: onePost.title,
         image: onePost.image,
+        postDate: onePost.createdAt,
         username: userData.username
     }
     res.json(payload)
