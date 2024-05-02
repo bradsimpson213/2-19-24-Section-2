@@ -51,3 +51,52 @@ npx dotenv sequelize db:seed:undo
 ```terminal
 npx dotenv sequelize db:seed:undo:all
 ```
+
+
+
+# Migration File Syntax
+
+## Create table:
+
+```javascript
+await queryInterface.createTable(<TableName>, { // This is the plural table name
+  <columnName>: {
+    type: Sequelize.<type>,
+    allowNull: <true|false>,
+    unique: <true|false>,
+    references: {
+      model: {
+        tableName: <TableName> // This is the plural table name
+      }
+    },
+    onDelete: <'NO ACTION'|'CASCADE'|'SET NULL'>,
+    onUpdate: <'NO ACTION'|'CASCADE'|'SET NULL'>,
+  }
+});
+```
+
+## Drop table (usually in the down function of a create table migration):
+
+```javascript
+await queryInterface.dropTable(<TableName>);
+```
+
+
+## Add column:
+
+```javascript
+await queryInteface.addColumn(<TableName>, <columnName>, {
+    type: Sequelize.<type>,
+    allowNull: <true|false>,
+    unique: <true|false>,
+    references: { model: <TableName> }, // This is the plural table name
+    onDelete: <'NO ACTION'|'CASCADE'|'SET NULL'>,
+    onUpdate: <'NO ACTION'|'CASCADE'|'SET NULL'>,
+});
+```
+
+## Remove column:
+
+```javascript
+await queryInterface.removeColumn(<TableName>, <columnName>);
+```
