@@ -24,27 +24,26 @@ router.get("/all", async (req, res) => {
 })
 
 router.get("/:id", async (req, res) => {
-    // const onePost = await Post.findOne({
-    //     where: {
-    //         id: req.params.id
-    //     }
-    // })
+
     const onePost = await Post.findByPk(req.params.id)
-    console.log(onePost)
+
     const userData = await onePost.getUser()
-    console.log(userData)
-    const numLikes = Like.count({
+
+    const numLikes = await Like.count({
         where: {
             postId: req.params.id
         }
     })
 
     const payload = {
+        id: onePost.id,
         title: onePost.title,
         image: onePost.image,
         postDate: onePost.createdAt,
-        username: userData.username
+        username: userData.username,
+        likes: numLikes
     }
+    console.log(payload)
     res.json(payload)
 })
 
@@ -112,5 +111,40 @@ router.delete("/delete/:id", async (req, res) => {
     })
 
 })
+
+router.get("/like/:postId/:userId", async (req, res) => {
+    const { postId, userId } = req.params
+    
+    const postToLike = await Post.findByPk(postId)
+
+    const userAlreadyLiked = await postToLike.hasPostLike(+userId)
+    console.log("LIKE-USERLIKED?", userAlreadyLiked)
+
+    if (userAlreadyLiked) {
+        res.send(`User ${userId} has already liked post ${postId}`)
+    } else {
+        await postToLike.addPostLike(+userId)
+        res.send(`Post ${postId} has been liked by User ${userId}`)
+    }
+});
+
+router.get("/unlike/:postId/:userId", async (req, res) => {
+    const { postId, userId } = req.params
+    const postToDislike = await Post.findByPk(postId)
+
+    const userAlreadyLiked = await postToDislike.hasPostLike(+userId)
+    console.log("LIKE-USERLIKED?", userAlreadyLiked)
+
+    if (userAlreadyLiked) {
+        await postToDislike.removePostLike(+userId)
+        res.send(`Post ${postId} has been unliked by User ${userId}`)
+    } else {
+        res.send(`User ${userId} never liked this post, we can't unlike it!`)
+    }
+})
+
+
+
+
 
 module.exports = router;

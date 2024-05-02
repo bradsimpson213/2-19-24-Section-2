@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         models.User,
         { foreignKey: "author"}
       )
+      
       Post.belongsToMany(
         models.User, {
           foreignKey: "postId",
