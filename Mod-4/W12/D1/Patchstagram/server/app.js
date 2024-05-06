@@ -9,6 +9,10 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 
+app.use("/styles", express.static('assets/css'))
+app.use("/pictures", express.static('assets/images'))
+app.use("/javascript", express.static('assets'))
+
 
 app.use("/posts", postsRouter)
 app.use("/users", userRouter)
@@ -17,7 +21,6 @@ app.use("/users", userRouter)
 app.get("/", (req, res) => {
     res.send("Welcome to our server!")
 })
-
 
 
 const port = process.env.PORT;
