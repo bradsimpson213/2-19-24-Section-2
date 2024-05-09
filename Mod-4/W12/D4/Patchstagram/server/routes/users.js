@@ -1,6 +1,8 @@
 const express = require("express")
 const { User } = require("../db/models")
 const { Op } = require('sequelize')
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 const users = express.Router()
 
@@ -43,7 +45,7 @@ users.get("/stats", async (req, res) => {
 
 users.get("/:id", async (req, res) => {
     const user = await User
-        .scope(["defaultScope","userForPost"])
+        .scope(["defaultScope", "userForPost"])
         .findByPk(req.params.id)
 
     console.log(user)
@@ -56,24 +58,83 @@ users.get("/:id", async (req, res) => {
     res.json(payload)
 })
 
+users.post("/signup", async (req, res) => {
+    const { name, username, email, password,
+        profile, age, breed, favToy } = req.body
+
+
+    const hashedPassword = bcrypt.hashSync(password)
+    console.log("HP!", hashedPassword)
+
+    const user = await User.create({
+        name, username, email, hashedPassword, profile,
+        age, breed, favToy
+    })
+
+    const safeUser = {
+        id: user.id,
+        username: user.username
+    }
+
+    const token = jwt.sign(
+        safeUser,
+        process.env.SECRET_KEY,
+        { expiresIn: '10m' }
+    )
+
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: true && "Lax",
+        maxAge: 600000
+    })
+
+    return res.json({
+        user: safeUser,
+        message: "New user created!"
+    })
+})
+
+
 users.post("/login", async (req, res) => {
     const { credential, password } = req.body
 
     const user = await User
-        .scope({ method: ["findUser", credential]})
+        .scope({ method: ["findUser", credential] })
         .findOne()
 
-    if (!user) {
+    if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
         console.log('USER NOT FOUND')
         res.send("User not found, try again!")
     } else {
-        console.log("WE FOUND A USER!")
-        res.json(user)
+        console.log("WE FOUND A USER!", user)
+
+        const safeUser = {
+            id: user.id,
+            username: user.username
+        }
+
+        const token = jwt.sign(
+            safeUser,
+            process.env.SECRET_KEY,
+            { expiresIn: '10m' }
+        )
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: true && "Lax",
+            maxAge: 600000
+        })
+
+        return res.json(safeUser)
     }
-
-
 })
 
+users.delete("/logout", async (req, res) => {
+    res.clearCookie("token")
+    return res.json({ message: "Logout successful!" })
+})
 
 
 
