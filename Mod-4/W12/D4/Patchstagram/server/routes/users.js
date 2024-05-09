@@ -7,19 +7,17 @@ const users = express.Router()
 
 
 users.get("/all", async (req, res) => {
-    const allUsers = await User.findAll({
-        attributes: ["name", "username", "age"],
-        where: {
-            age: {
-                [Op.between]: [6, 10]
-            } 
-        }
-        // order: [
-        //     ["age", "ASC"],
-        //     ["name", "ASC"]
-        // ]
-    })
-    // console.log(allUsers)
+    const allUsers = await User.findAll()
+    // attributes: ["name", "username", "age"],
+    // where: {
+    //     age: {
+    //         [Op.between]: [6, 10]
+    //     } 
+    // }
+    // order: [
+    //     ["age", "ASC"],
+    //     ["name", "ASC"]
+    // ]
     res.json(allUsers)
 })
 
@@ -44,19 +42,37 @@ users.get("/stats", async (req, res) => {
 
 
 users.get("/:id", async (req, res) => {
-    const user = await User.findByPk(req.params.id)
+    const user = await User
+        .scope(["defaultScope","userForPost"])
+        .findByPk(req.params.id)
+
     console.log(user)
-    const posts = await user.getPosts() 
+    const posts = await user.getPosts()
 
     const payload = {
         user: user,
         posts: posts
     }
     res.json(payload)
-
 })
 
+users.post("/login", async (req, res) => {
+    const { credential, password } = req.body
 
+    const user = await User
+        .scope({ method: ["findUser", credential]})
+        .findOne()
+
+    if (!user) {
+        console.log('USER NOT FOUND')
+        res.send("User not found, try again!")
+    } else {
+        console.log("WE FOUND A USER!")
+        res.json(user)
+    }
+
+
+})
 
 
 

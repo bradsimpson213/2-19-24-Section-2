@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, Op
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -65,6 +65,31 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
+    defaultScope: {
+      attributes: {
+        exclude: ["hashedPassword", "createdAt", "updatedAt", "email"]
+      }
+    },
+    scopes: {
+      userForPost: {
+        attributes: {
+          exclude: ['breed', 'favToy', 'age']
+        }
+      },
+      findUser(credential) {
+        return {
+          where: {
+            [Op.or]: {
+              username: credential,
+              email: credential
+            }
+          },
+          attributes: {
+            exclude: [ 'createdAt', 'updatedAt', 'breed', 'age', 'favToy', 'profile']
+          }
+        }
+      }
+    }
   });
   return User;
 };
