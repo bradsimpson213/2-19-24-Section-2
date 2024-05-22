@@ -16,6 +16,7 @@ const mimi = {
     profile: "https://res.cloudinary.com/app-academy4/image/upload/v1684861055/Patchstagram/Mimi2_nzcfiy.png"
 }
 
+export const users = [blue, patch, mimi]
 
 const someData = [
     {
