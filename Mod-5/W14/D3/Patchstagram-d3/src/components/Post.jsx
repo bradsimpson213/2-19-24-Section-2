@@ -5,6 +5,7 @@ export default function Post ({ data })  {
     console.log(data)
     const { id, title, author, image, date } = data
 
+    const newInfo = [1, 2, 3]
     return (
         <div className="post-container">
             <div className="post-header">
