@@ -1,13 +1,13 @@
+import { useThemeContext } from "../context/ThemeContext"
 import "./Post.css"
 
 
 export default function Post ({ data })  {
-    console.log(data)
     const { id, title, author, image, date } = data
+    const { theme } = useThemeContext()
 
-    const newInfo = [1, 2, 3]
     return (
-        <div className="post-container">
+        <div className={`post-container ${theme}`}>
             <div className="post-header">
                 <div className="user-info">
                     <img
