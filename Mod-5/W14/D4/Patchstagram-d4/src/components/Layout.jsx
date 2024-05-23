@@ -4,7 +4,7 @@ import { useThemeContext } from "../context/ThemeContext";
 import "./Layout.css"
 
 export default function Layout () {
-    const { theme, setTheme } = useThemeContext()
+    const { theme } = useThemeContext()
     return(
         <div>
             <nav className={`navbar-links-container ${theme}`}>
