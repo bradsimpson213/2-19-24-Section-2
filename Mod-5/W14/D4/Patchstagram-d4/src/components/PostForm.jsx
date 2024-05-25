@@ -61,7 +61,7 @@ export default function PostForm (props) {
                         id="title"
                         type="text"
                         value={ title }
-                        onChange={ (e) => setTitle(e.target.value)}
+                        onChange={ function (e) {setTitle(e.target.value)}}
                         placeholder='Title'
                     />
                 </div>
