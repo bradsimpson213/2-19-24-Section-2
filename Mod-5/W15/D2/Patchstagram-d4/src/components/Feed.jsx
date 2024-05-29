@@ -1,10 +1,21 @@
 import Post from "./Post"
-import { usePostsContext } from "../context/PostsContext"
+// import { usePostsContext } from "../context/PostsContext"
+import { useSelector, useDispatch } from "react-redux";
+import { getPosts } from "../store/postsReducer";
+import { useEffect } from "react";
+import seedPosts from "../data"
 import "./Feed.css"
 
 
 export default function Feed () {
-    const { posts } = usePostsContext()
+    // const { posts } = usePostsContext()
+    const posts = useSelector( state => state.postsState.posts)
+    const dispatch = useDispatch()
+
+
+    useEffect( () => {
+        dispatch(getPosts(seedPosts))
+    }, [])
 
     const compare = (a, b) => {
         if (new Date(a.date) < new Date(b.date)) return 1;

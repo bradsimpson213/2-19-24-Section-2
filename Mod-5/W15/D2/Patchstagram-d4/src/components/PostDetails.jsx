@@ -1,20 +1,27 @@
 import { useParams, Link } from "react-router-dom"
+import { useSelector } from 'react-redux'
+import Post from "./Post"
+import Comment from "./Comment"
 
-export default function PostDetails({ data }) {
+
+export default function PostDetails() {
+    const posts = useSelector( state => state.postsState.posts)
     const { postId } = useParams()
     console.log(postId)
-    const postData = data.find(post => post.id === +postId)
+    const postData = posts.find(post => post.id === +postId)
 
     return (
-        <div>
-            <Link to="/feed">Back to feed...</Link>
-            <p>{postData.title}</p>
-            <p> by: {postData.author.username} </p>
-            <img src={postData.image} style={{ height: "300px" }} />
-            <span>Likes:</span><span>{postData.likes}</span>
-
-        </div>
-    )
+            <div className="feed-container">
+                <Link to="/feed">Back to feed...</Link>
+                <Post data={ postData } />
+                    <div>
+                        <p>Likes: { postData.likes }</p>
+                        { postData.comments.map( (comment, index) => (
+                            <Comment key={ index} comment={ comment } />
+                        ))}
+                    </div>
+            </div>
+        )
 }
 
 
