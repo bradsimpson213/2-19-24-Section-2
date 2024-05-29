@@ -1,13 +1,19 @@
 import { useState, useEffect } from 'react'
-import someData, { users } from "../data"
+import someData from "../data"
 import { useNavigate } from "react-router-dom"
+import { useSelector, useDispatch } from 'react-redux'
+import { createPost } from "../store/postsReducer"
 
-export default function PostForm (props) {
+
+export default function PostForm () {
+    const users = useSelector( state => state.usersState.users)
+    const posts = useSelector( state => state.postsState.posts)
     const [title, setTitle] = useState("")
     const [image, setImage] = useState("")
     const [author, setAuthor] = useState("")
     const [validationErrors, setValidationErrors] = useState({})
     const [hasSubmitted, setHasSubmitted] = useState(false)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
 
@@ -34,7 +40,7 @@ export default function PostForm (props) {
         console.log(selectedUser)
 
         const newPost = {
-            id: someData.length + 1,
+            id: posts.length + 1,
             title, 
             image, 
             author: selectedUser,
@@ -44,6 +50,7 @@ export default function PostForm (props) {
         }
         console.log(newPost)
         someData.push(newPost)
+        dispatch(createPost(newPost))
         setAuthor("")
         setTitle("")
         setImage("")
