@@ -1,10 +1,18 @@
-import { Outlet, NavLink } from "react-router-dom"
+import { Outlet, NavLink, Navigate } from "react-router-dom"
 import Switch from "./Switch"
-import { useThemeContext } from "../context/ThemeContext"; 
+import { useThemeContext } from "../context/ThemeContext";
+import { useSelector, useDispatch } from "react-redux"; 
 import "./Layout.css"
+import { logoutUser } from "../store/usersReducer";
+
 
 export default function Layout () {
+    const sessionUser = useSelector( state => state.usersState.sessionUser)
+    console.log("LOGGED IN USER",sessionUser)
+    const dispatch = useDispatch()
     const { theme } = useThemeContext()
+
+
     return(
         <div>
             <nav className={`navbar-links-container ${theme}`}>
@@ -21,6 +29,17 @@ export default function Layout () {
                 <NavLink to="/feed">Feed</NavLink>
                 <NavLink to="/new">New Post</NavLink>
                 {/* <a href="/new">New Post</a> */}
+                <div>
+                    { sessionUser
+                        ? <span>Current user: {sessionUser.username}</span>
+                        : <Navigate to="/" />
+                    }
+                </div>
+                <button
+                    onClick={ () => dispatch(logoutUser()) }
+                >
+                    Logout
+                </button>
                 <Switch />
             </nav>
             <Outlet />

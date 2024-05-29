@@ -1,11 +1,22 @@
 import { Link, useNavigate } from "react-router-dom"
+import { useSelector, useDispatch } from 'react-redux'
+import { useState } from "react"
+import { loginUser } from "../store/usersReducer"
 import "./Landing.css"
 
+
 export default function Landing () {
+    const [ currentUser, setCurrentUser ] = useState('')
+    const users = useSelector( state => state.usersState.users)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
 
-    const handleClick = (event) => {
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const selectedUser = users.find( user => user.username === currentUser)
+        dispatch(loginUser(selectedUser))
+        setCurrentUser("")
         navigate("/feed")
     }
 
@@ -21,12 +32,38 @@ export default function Landing () {
             />
             <p className="landing-subtitle">The cat with so much to talk about, he needs his own social media site!</p>
             {/* <Link to="/feed">Feed</Link> */}
-            <button
-                className="landing-button"
-                onClick={ handleClick }
-            >
-                Enter Site
+            <form onSubmit={ handleSubmit }>
+                <div>
+                    <label
+                        htmlFor="currentUser"
+                    >
+                        User to login:
+                    </label>
+                    <select
+                        name="currentUser"
+                        onChange={ (e) => setCurrentUser(e.target.value) }
+                        value={ currentUser }
+                    >
+                        <option
+                            value=''
+                            disabled
+                        >
+                            Select a user...
+                        </option>
+                        { users.map( (user, index) => (
+                            <option key={ index }>
+                                { user.username}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <button
+                    className="landing-button"
+
+                >
+                    Login
                 </button>
+            </form>
         </div>
     )
 }
