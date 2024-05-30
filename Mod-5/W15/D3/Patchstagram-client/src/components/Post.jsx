@@ -4,7 +4,7 @@ import "./Post.css"
 
 
 export default function Post ({ data })  {
-    const { id, title, author, image, date } = data
+    const { id, title, User, image, createdAt } = data
     const { theme } = useThemeContext()
 
     return (
@@ -12,13 +12,13 @@ export default function Post ({ data })  {
             <div className="post-header">
                 <div className="user-info">
                     <img
-                        src={author.profile}
+                        src={User.profile}
                         alt="user-profile"
                         className="profile-image"
                         />
-                    <h2>{ author.username }</h2>
+                    <h2>{ User.username }</h2>
                 </div>
-            <h3>{date.toDateString()}</h3>
+            <h3>{ createdAt.split("T")[0] }</h3>
         </div>
             <div className="post-body">
                 <h2>{ title }</h2>

@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import usersReducer from './usersReducer'
 import postsReducer from './postsReducer'
+import { thunk } from 'redux-thunk'
 
 
 const rootReducer = combineReducers({
@@ -15,7 +16,9 @@ if (import.meta.env.MODE !== "production") {
   const logger = (await import("redux-logger")).default;
   const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  enhancer = composeEnhancers(applyMiddleware(logger));
+  enhancer = composeEnhancers(applyMiddleware(thunk, logger));
+} else {
+  enhancer = applyMiddleware(thunk)
 }
 
 

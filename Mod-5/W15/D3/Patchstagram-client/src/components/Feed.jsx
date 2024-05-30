@@ -1,9 +1,9 @@
 import Post from "./Post"
 // import { usePostsContext } from "../context/PostsContext"
 import { useSelector, useDispatch } from "react-redux";
-import { getPosts } from "../store/postsReducer";
+import { getAllPosts } from "../store/postsReducer";
 import { useEffect } from "react";
-import seedPosts from "../data"
+// import seedPosts from "../data"
 import "./Feed.css"
 
 
@@ -14,19 +14,19 @@ export default function Feed () {
 
 
     useEffect( () => {
-        dispatch(getPosts(seedPosts))
+        dispatch(getAllPosts())
     }, [])
 
-    const compare = (a, b) => {
-        if (new Date(a.date) < new Date(b.date)) return 1;
-        if (new Date(a.date) > new Date(b.date)) return -1;
-        if (new Date(a.date) === new Date(b.date)) return 0;
-    };
-    const sortedFeed = posts.sort(compare)
+    // const compare = (a, b) => {
+    //     if (new Date(a.date) < new Date(b.date)) return 1;
+    //     if (new Date(a.date) > new Date(b.date)) return -1;
+    //     if (new Date(a.date) === new Date(b.date)) return 0;
+    // };
+    // const sortedFeed = posts.sort(compare)
 
     return(
         <div className="feed-container">
-            { sortedFeed.map(post => (
+            { posts.map(post => (
                 <Post data={post} key={post.id} />
               ))}
         </div>

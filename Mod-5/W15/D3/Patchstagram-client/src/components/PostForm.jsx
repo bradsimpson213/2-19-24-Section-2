@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
-import someData from "../data"
+// import someData from "../data"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux'
-import { createPost } from "../store/postsReducer"
+import { createNewPost } from "../store/postsReducer"
 
 
 export default function PostForm () {
     const users = useSelector( state => state.usersState.users)
-    const posts = useSelector( state => state.postsState.posts)
+    // const posts = useSelector( state => state.postsState.posts)
     const [title, setTitle] = useState("")
     const [image, setImage] = useState("")
     const [author, setAuthor] = useState("")
@@ -25,7 +25,7 @@ export default function PostForm () {
       }, [title, image])
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         console.log(image, title, author)
         setHasSubmitted(true)
@@ -39,22 +39,32 @@ export default function PostForm () {
         const selectedUser = users.find( user => user.username === author)
         console.log(selectedUser)
 
+        // const newPost = {
+        //     id: posts.length + 1,
+        //     title, 
+        //     image, 
+        //     author: selectedUser,
+        //     date: new Date(),
+        //     comments: [],
+        //     likes: Math.floor(Math.random() + 10)
+        // }
         const newPost = {
-            id: posts.length + 1,
             title, 
             image, 
-            author: selectedUser,
-            date: new Date(),
-            comments: [],
-            likes: Math.floor(Math.random() + 10)
+            author: selectedUser.id,
         }
         console.log(newPost)
-        someData.push(newPost)
-        dispatch(createPost(newPost))
-        setAuthor("")
-        setTitle("")
-        setImage("")
-        navigate("/feed")
+        // someData.push(newPost)
+        const response = await dispatch(createNewPost(newPost))
+        if (response === true) {
+            setAuthor("")
+            setTitle("")
+            setImage("")
+            navigate("/feed")
+        } else {
+            console.log('ERROR RESPONSE', error)
+            setValidationErrors(response)
+        }
     }
 
 
