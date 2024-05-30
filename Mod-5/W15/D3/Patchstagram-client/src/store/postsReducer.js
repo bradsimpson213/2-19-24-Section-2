@@ -50,14 +50,23 @@ export const createNewPost = (post) => async (dispatch) => {
 }
 
 // REDUCER
-const initialState = { posts: [] }
+const initialState = { posts: {} }
 
 const postsReducer = (state=initialState, action) => {
+    let newState = {}
     switch(action.type){
         case GET_POSTS:
-            return { ...state, posts: [...action.posts]}
+            newState = { ...state }
+            action.posts.forEach( post => (newState.posts[post.id] = post ))
+            console.log("NEWSTATE", newState)
+            return newState
+            // return { ...state, posts: [...action.posts]}
         case CREATE_POST:
-            return { ...state, posts: [...state.posts, action.post] }
+            newState = {...state}
+            newState.posts[action.post.id] = action.post
+            console.log("CREATEPOST", newState )
+            return newState
+            // return { ...state, posts: [...state.posts, action.post] }
         default:
             return state
     }

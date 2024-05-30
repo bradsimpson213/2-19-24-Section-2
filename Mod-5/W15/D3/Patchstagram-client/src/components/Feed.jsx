@@ -9,7 +9,8 @@ import "./Feed.css"
 
 export default function Feed () {
     // const { posts } = usePostsContext()
-    const posts = useSelector( state => state.postsState.posts)
+    const postsObj = useSelector( state => state.postsState.posts)
+    const posts = Object.values(postsObj)
     const dispatch = useDispatch()
 
 
@@ -23,6 +24,7 @@ export default function Feed () {
     //     if (new Date(a.date) === new Date(b.date)) return 0;
     // };
     // const sortedFeed = posts.sort(compare)
+
 
     return(
         <div className="feed-container">

@@ -99,7 +99,7 @@ export default function PostForm () {
                     { hasSubmitted && validationErrors.image }
                 </div>
                 <div>
-                    <label htmlFor="author">Image URL:</label>
+                    <label htmlFor="author">Author:</label>
                     <select
                         name='author'
                         value={ author }

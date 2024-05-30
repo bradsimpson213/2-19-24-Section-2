@@ -8,7 +8,8 @@ export default function PostDetails() {
     const posts = useSelector( state => state.postsState.posts)
     const { postId } = useParams()
     console.log(postId)
-    const postData = posts.find(post => post.id === +postId)
+    // const postData = posts.find(post => post.id === +postId)
+    const postData = posts[postId]
 
     return (
             <div className="feed-container">
@@ -16,7 +17,7 @@ export default function PostDetails() {
                 <Post data={ postData } />
                     <div>
                         <p>Likes: { postData.likes }</p>
-                        { postData.comments.map( (comment, index) => (
+                        { postData.comments?.map( (comment, index) => (
                             <Comment key={ index} comment={ comment } />
                         ))}
                     </div>
