@@ -1,0 +1,62 @@
+h1 + * {
+  border: 4px dashed black;
+  padding: 12px;
+}
+
+li > * {
+  margin: 4px;
+}
+
+ul + * {
+  margin: 20px;
+}
+
+section > * {
+  display: block;
+  margin: 8px 0;
+}
+
+form {
+  display: flex;
+}
+
+form > button, form > input {
+  margin: 0 4px;
+}
+
+input[type="number"] {
+  max-width: 30px;
+}
+
+.rating-input {
+  display: flex;
+  margin-right: 4px;
+}
+
+.review-item {
+  display: flex;
+}
+
+.rating-input .filled {
+  color: saddlebrown;
+}
+
+.rating-input .empty {
+  color: burlywood;
+}
+
+.sort {
+  display: flex;
+  list-style: none;
+}
+
+.sort li {
+  cursor: pointer;
+  margin: 0 4px;
+}
+
+.sort li.active {
+  font-weight: bold;
+  text-decoration: underline;
+  pointer-events: none;
+}
