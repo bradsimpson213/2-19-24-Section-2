@@ -1,0 +1,13 @@
+{
+  "programs": {
+    "BASE": {
+      "starter-exclusions": [
+        "test/original-files/",
+        "test/resetFiles.cjs"
+      ]
+    },
+    "FT": true,
+    "PT": true,
+    "CH": true
+  }
+}
