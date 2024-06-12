@@ -24,9 +24,9 @@
 
 
 # Example #5 List.map and Lambda
-# array1 = [1, 4, 9, 16] 
-# map1 = map(lambda x: x * 2, array1)
-# print(list(map1))
+array1 = [1, 4, 9, 16] 
+map1 = map(lambda x: x * 2, array1)
+print(list(map1))
 # map2 = [ x * 2 for x in array1 ]
 # print(map2)
 

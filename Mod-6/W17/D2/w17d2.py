@@ -239,7 +239,7 @@ import time
 #     break
 
 
-foods = ['wings', 'pizza', 'mac n cheese', "salad"]
+# foods = ['wings', 'pizza', 'mac n cheese', "salad"]
 
 # for food in foods:
 #     print(food)
@@ -306,21 +306,99 @@ foods = ['wings', 'pizza', 'mac n cheese', "salad"]
 
 # raise Exception("This was an error!")
 
-def seq_of_numbers(seq):
-    pass
+# def seq_of_numbers(seq):
+#     seq += " "
+#     count = 1
+#     results = ''
+#     index = 0
+
+#     while index < len(seq) - 1:
+#         if seq[index] != seq[index + 1]:
+#             results = results + str(count)+ seq[index] + ','
+#             count = 1
+#         else:
+#             count += 1
+
+#         index += 1
+
+#     return results
 
 
 
-print(seq_of_numbers("1211"))
-# This is "one 1, one 2, two 1s"
-# Prints "11,12,21"
-# 111221
+# print(seq_of_numbers("1211 "))
+# # This is "one 1, one 2, two 1s"
+# # Prints "11,12,21"
+# # 111221
 
-print(seq_of_numbers("111221"))
-# This is "three 1s, two 2s, and one 1"
-# Prints "31,22,11"
+# print(seq_of_numbers("111221"))
+# # This is "three 1s, two 2s, and one 1"
+# # Prints "31,22,11"
 
-print(seq_of_numbers("31131211131221"))
+# print(seq_of_numbers("31131211131221"))
 # This is "one 3, two 1s, one 3, one 1, one 2, three 1s,
 #    one 3, one 1, two 2s, and one 1"
 # Prints "13,21,13,11,12,31,13,11,22,11"
+
+
+# FUNCTIONS
+# def is_even(num):
+#     """function to tell if a number is even"""
+#     return num % 2 == 0
+
+# print(is_even(7))
+
+
+# even = lambda num: num % 2 == 0
+
+# print(even(6))
+
+
+# multiply = lambda num1, num2: num1 * num2
+
+# print(multiply(2, 6))
+
+# PII = 3.14
+# y = 1000
+# print('before func', y)
+
+# def some_function():
+#     print(PII)# y = 50
+#     global y 
+#     print("in func", y)
+#     if True:
+#         print("in if", y)
+#         y += 10
+
+#     y += 50
+#     print("in func second time", y)
+
+# some_function()
+
+# print("after func", y)
+
+# LISTS
+
+foods = ['wings', 'pizza', 'mac n cheese', "salad"]
+
+# print(foods[1])
+# print(foods[-1])
+# print(foods[1:3])
+# print(foods[::-1])
+# print(len(foods))
+# foods.append("steak")
+# print(foods)
+# foods.extend(['tacos', 'fajitas', 'fries'])
+# print(foods)
+# foods.insert(1, "burrito")
+# print(foods)
+# foods.remove("tacos")
+# print(foods)
+# foods.pop()
+# print(foods)
+# foods.sort()
+# print(foods)
+
+vals = [1, 2, 3, 4, 5]
+print(sum(vals))
+print(min(vals))
+print(max(vals))
