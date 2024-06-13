@@ -171,18 +171,18 @@ meals = {
 #     print(key, value)
 
 
-# def summer(num1, num2, num3=15, *args, **kwargs):
-#     """function that will sum anything we throw at it"""
-#     total = sum([num1, num2, num3])
-#     print(args)
-#     for arg in args:
-#         total += arg
+def summer(num1, num2, num3=15, *args, **kwargs):
+    """function that will sum anything we throw at it"""
+    total = sum([num1, num2, num3])
+    print(args)
+    for arg in args:
+        total += arg
 
-#     print(kwargs)
-#     for kwarg in kwargs.values():
-#         total += kwarg
+    print(kwargs)
+    for kwarg in kwargs.values():
+        total += kwarg
 
-#     return total
+    return total
 
 
 # print(summer(5, 10, 20, 25, 30, 35, num7=40, num8=45))
