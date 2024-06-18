@@ -2,26 +2,32 @@
 
 
 {% block content %}
-<div>
-    {% for post in posts %}
-        <div>
-            <div>
-                {% if post.author == "Patch" %}
-                    <h2 style="color: red;">{{ post.author }}</h2>
-                {% elif post.author == "Blue" %}
-                    <h2 style="color: blue;">{{ post.author }}</h2>
-                {% else %}
-                    <h2>{{ post.author }}</h2>
-                {% endif %}
-            </div>
-            <div>
-                <img style="height: 300px;" src="{{ post.image }}" />
-                <p>{{ post.date }} - {{ post.caption }}</p>
-                <p>{{ post.likes}} Likes</p>
-            </div>
-        </div>
+<div class="feed-container">
 
+    {% for post in posts %}
+        <div class="post-container">
+            <div class="post-box">
+                <div class="post-author">
+                    {% if post.author == "Patch" %}
+                        <h2 style="color: red;">{{ post.author }}</h2>
+                    {% elif post.author == "Blue" %}
+                        <h2 style="color: blue;">{{ post.author }}</h2>
+                    {% else %}
+                        <h2 style="color: green;">{{ post.author }}</h2>
+                    {% endif %}
+                </div>
+                <h3>{{ post.date }}</h3>
+            </div>
+            <div>
+                <img class="post-image" src="{{ post.image }}" />
+                <p class="post-text">{{ post.caption }}</p>
+                <p class="post-text">{{ post.likes }} Likes</p>
+            </div>
+            <a href="/posts/update/{{ post.id }}">Update</a>
+            <a href="/posts/delete/{{ post.id }}">Delete</a>
+        </div>
     {% endfor %}
+
 </div>
 
 {% endblock %}

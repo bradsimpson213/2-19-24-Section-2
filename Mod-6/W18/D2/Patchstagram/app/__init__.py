@@ -4,6 +4,7 @@ from .posts import posts
 from .routes.post_routes import posts
 from .routes.user_routes import users
 
+
 app = Flask(__name__)
 
 app.config.from_object(Config)
@@ -11,7 +12,7 @@ app.config.from_object(Config)
 app.register_blueprint(posts, url_prefix="/posts")
 app.register_blueprint(users)
 
-print("in dudner init", __name__)
+# print("in dudner init", __name__)
 
 
 @app.route("/")
