@@ -91,9 +91,6 @@ def update_post(id):
 
 
 
-
-
-
 @posts.route("/delete/<int:id>")
 def delete_post(id):
     """will delete a given post by its ID"""

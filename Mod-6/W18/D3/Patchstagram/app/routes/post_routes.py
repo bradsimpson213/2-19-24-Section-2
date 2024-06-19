@@ -8,9 +8,9 @@ from random import randint
 posts = Blueprint('posts', __name__)
 
 
-print("in posts bp", __name__)
+# print("in posts bp", __name__)
 
-"/posts/all"
+# "/posts/all"
 @posts.route("/all")
 def get_all_posts():
     """route the queries for all posts and then returns them in a template"""
