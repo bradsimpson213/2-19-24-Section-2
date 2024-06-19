@@ -20,3 +20,26 @@ class User(db.Model):
                 secondary=likes,
                 back_populates="post_likes",
     )
+
+
+    def to_dict(self, posts=False):
+        dict_user = {
+            "id": self.id,
+            "username": self.username,
+            "profilePic": self.profile_pic,
+            "bio": self.bio,
+            "likes": len(self.user_likes)
+        }
+        if posts:
+            dict_user["posts"] = [post.to_dict() for post in self.posts]
+
+        return dict_user
+
+    def to_dict_no_posts(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "profilePic": self.profile_pic,
+            "bio": self.bio,
+            "likes": len(self.user_likes)
+        }

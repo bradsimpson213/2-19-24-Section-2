@@ -20,3 +20,18 @@ class Post(db.Model):
                 secondary=likes,
                 back_populates="user_likes",
     )
+
+    def __repr__(self):
+        return f"< Post id: {self.id} by: {self.user.username} >"
+
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "caption": self.caption,
+            "image": self.image,
+            "postData": self.post_date,
+            "likes": len(self.post_likes),
+            "user": self.user.to_dict_no_posts()
+        }
+

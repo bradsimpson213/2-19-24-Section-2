@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, redirect
 from ..posts import posts as seed_posts
 from ..forms.post_form import PostForm
-from datetime import datetime
+from datetime import date
 from random import randint
+from ..models import db, Post, User
 
 
 posts = Blueprint('posts', __name__)
@@ -15,18 +16,22 @@ posts = Blueprint('posts', __name__)
 def get_all_posts():
     """route the queries for all posts and then returns them in a template"""
     # QUERY IN HERE
-    # all_posts = Post.query.all()
+    all_posts = Post.query.order_by(Post.post_date.desc()).all()
+    # print(all_posts)
+    view_posts = [post.to_dict() for post in all_posts]
+    print(view_posts)
     # sorted_posts = sorted(seed_posts, key=lambda post: post["date"], reverse=True)
-    return render_template('feed.html', posts=seed_posts)
+    return render_template('feed.html', posts=all_posts)
+    # return view_posts
 
 
 @posts.route("/<int:id>")
 def get_post_by_id(id):
     """return a single post by its id"""
-    # one_post = Post.query.get(id)
-    one_post = [post for post in seed_posts if post["id"] == id]
+    one_post = Post.query.get(id)
+    # one_post = [post for post in seed_posts if post["id"] == id]
     print(one_post)
-    return render_template("feed.html", posts=one_post)
+    return render_template("feed.html", posts=[one_post])
 
 
 
@@ -35,19 +40,22 @@ def create_new_post():
     """render an empty form on get requests, validates and submits form on post requests"""
 
     form = PostForm()
-
+    form.author.choices = [ (user.id, user.username) for user in User.query.all() ]
+    print(form.author.choices)
 
     if form.validate_on_submit():
-        new_post = {
-            "id": len(seed_posts) + 1,
-            "caption": form.data["caption"],
-            "image": form.data["image"],
-            "author": form.data['author'],
-            "date": datetime.now(),
-            "likes": randint(1, 10)
-        }
+        selected_user = User.query.get(form.data["author"])
+        print(selected_user)
+
+        new_post = Post(
+            caption=form.data["caption"],
+            image=form.data["image"],
+            post_date=date.today(),
+            user=selected_user,
+        )
         print(new_post)
-        seed_posts.append(new_post)
+        db.session.add(new_post)
+        db.session.commit()
         return redirect("/posts/all")
 
     if form.errors:
@@ -65,16 +73,16 @@ def update_post(id):
     validate/save on post requests"""
 
     form = PostForm()
+    form.author.choices = [ (user.id, user.username) for user in User.query.all() ]
 
     if form.validate_on_submit():
-        post_to_update = [post for post in seed_posts if post["id"] == id]
+        post_to_update = Post.query.get(id)
+        selected_user = User.query.get(form.data["author"])
 
-        if post_to_update:
-            update_dict = post_to_update[0]
-            update_dict["caption"] = form.data["caption"]
-            update_dict["author"] = form.data["author"]
-            update_dict['image'] = form.data["image"]
-
+        post_to_update.user = selected_user
+        post_to_update.caption = form.data["caption"]
+        post_to_update.image = form.data["image"]
+        db.session.commit()
         return redirect(f"/posts/{id}")    
 
 
@@ -84,21 +92,20 @@ def update_post(id):
         return render_template("post_form.html", form=form, type="update", id=id, errors=form.errors)
 
     else:
-        current_data = [post for post in seed_posts if post["id"] == id]        
+        current_data = Post.query.get(id)    
         print(current_data)
-        form.process(data=current_data[0])
+        form.process(obj=current_data)
         return render_template("post_form.html", form=form, type="update", id=id, errors=None)
-
-
-
 
 
 
 @posts.route("/delete/<int:id>")
 def delete_post(id):
     """will delete a given post by its ID"""
-    post_to_delete = [post for post in seed_posts if post["id"] == id]
+    # post_to_delete = [post for post in seed_posts if post["id"] == id]
+    post_to_delete = Post.query.get(id)
     print(post_to_delete)
     if post_to_delete:
-        seed_posts.remove(post_to_delete[0])
+        db.session.delete(post_to_delete)
+        db.session.commit()
     return redirect("/posts/all")
