@@ -81,11 +81,3 @@ throughout Week 19.
 
 
 
-## Instructor GitHub Handles
-
-Please add your all your instructor to your project repo as collaborators.  Your project advisor will be assigned once all group have settled on their clone projects (so should happen Tuesday)
-
-- Brad: `bradsimpson213`
-- David: `hisownspace`
-- Andrew: `andrwtran`
-
