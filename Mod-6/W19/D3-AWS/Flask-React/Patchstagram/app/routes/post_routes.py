@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, flash
+from flask import Blueprint, render_template, redirect, flash, request
 from ..posts import posts as seed_posts
 from ..forms.post_form import PostForm
 from datetime import date
@@ -20,8 +20,8 @@ def get_all_posts():
     view_posts = [post.to_dict() for post in all_posts]
     print(view_posts)
     # sorted_posts = sorted(seed_posts, key=lambda post: post["date"], reverse=True)
-    return render_template('feed.html', posts=all_posts)
-    # return view_posts
+    # return render_template('feed.html', posts=all_posts)
+    return { "posts": view_posts }
 
 
 @posts.route("/<int:id>")
@@ -41,6 +41,8 @@ def create_new_post():
     form = PostForm()
     form.author.choices = [ (user.id, user.username) for user in User.query.all() ]
     # print(form.author.choices)
+    form["csrf_token"].data = request.cookies["csrf_token"]
+     
 
     if form.validate_on_submit():
         selected_user = User.query.get(form.data["author"])
@@ -65,7 +67,8 @@ def create_new_post():
         db.session.add(new_post)
         db.session.commit()
         flash(f"New Post Created by {selected_user.username}!")
-        return redirect("/posts/all")
+        # return redirect("/posts/all")
+        return { "resPost": new_post.to_dict() }
 
     if form.errors:
         print(form.errors)

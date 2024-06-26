@@ -31,11 +31,11 @@ export const getAllPosts = () => async (dispatch) => {
 export const createNewPost = (post) => async (dispatch) => {
     const response = await fetch("/api/posts/new",{
         method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify(post)
+        // headers: {
+        //     'Accept': 'application/json',
+        //     'Content-type': 'application/json'
+        // },
+        body: post
     })
     if (response.ok) {
         const { resPost } = await response.json()

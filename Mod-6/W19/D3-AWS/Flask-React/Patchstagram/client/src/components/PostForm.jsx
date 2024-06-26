@@ -20,7 +20,7 @@ export default function PostForm () {
     useEffect( () => {
         const errors = {}
         if (!title.length) errors.title = "Please enter a post title!"
-        if (!image.length) errors.image = "Please provide an image url!"
+        if (!image) errors.image = "Please provide an image url!"
         setValidationErrors(errors)
       }, [title, image])
 
@@ -48,14 +48,19 @@ export default function PostForm () {
         //     comments: [],
         //     likes: Math.floor(Math.random() + 10)
         // }
-        const newPost = {
-            title, 
-            image, 
-            author: selectedUser.id,
-        }
-        console.log(newPost)
+        // const newPost = {
+        //     title, 
+        //     image, 
+        //     author: selectedUser.id,
+        // }
+        // console.log(newPost)
+
+        const formData = new FormData()
+        formData.append("caption", title)
+        formData.append("image", image)
+        formData.append("author", selectedUser.id)
         // someData.push(newPost)
-        const response = await dispatch(createNewPost(newPost))
+        const response = await dispatch(createNewPost(formData))
         if (response === true) {
             setAuthor("")
             setTitle("")
@@ -71,7 +76,10 @@ export default function PostForm () {
     return (
         <div className="feed-container">
             <h2>Create Post </h2>
-            <form onSubmit={ handleSubmit }>
+            <form 
+                onSubmit={ handleSubmit }
+                encType="multipart/form-data"
+            >
                 <div>
                     <label htmlFor="title">Title:</label>
                     <input 
@@ -86,12 +94,12 @@ export default function PostForm () {
                     { hasSubmitted && validationErrors.title }
                 </div>
                 <div>
-                    <label htmlFor="image">Image URL:</label>
+                    <label htmlFor="image">Image File:</label>
                     <input 
                         id="image"
-                        type="text"
-                        value={ image }
-                        onChange={ (e) => setImage(e.target.value)}
+                        type="file"
+                        accept="image/*"
+                        onChange={ (e) => setImage(e.target.files[0])}
                         placeholder='Image URL'
                     />
                 </div>
